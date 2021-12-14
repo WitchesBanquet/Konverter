@@ -9,7 +9,6 @@
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY
 
-using Konverter.Services.Interfaces;
 using Microsoft.Extensions.Hosting;
 
 namespace Konverter;
