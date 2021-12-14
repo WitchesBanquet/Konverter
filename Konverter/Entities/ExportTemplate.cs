@@ -18,5 +18,6 @@ public record ExportTemplate : IMetadata
     public string Description { get; set; }
     public bool HaveIndex { get; set; }
     public DateTime AddTime { get; set; }
+    public string FileExtension { get; set; }
     public string FileNameTemplate { get; set; }
 }

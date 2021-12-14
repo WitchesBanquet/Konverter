@@ -92,9 +92,15 @@ public class AddNewExportTemplateRunner : IRunner
             _logger.LogInformation("Import template operation canceled by user");
             return Task.CompletedTask;
         }
+        var fe = AnsiConsole.Ask<string>("请输入输出文件后缀(输入 %quit 退出)：");
+        if (fe.Trim().ToLower() == "%quit")
+        {
+            _logger.LogInformation("Import template operation canceled by user");
+            return Task.CompletedTask;
+        }
 
         // Build model and add
-        var model = new ExportTemplate { Name = name, Description = description, FileNameTemplate = ft };
+        var model = new ExportTemplate { Name = name, Description = description, FileNameTemplate = ft, FileExtension = fe.Trim().ToLower() };
         var obj = _templateService.ExportTemplateFromFile(filePath, indexPath, model);
 
         // Finish check
