@@ -10,6 +10,7 @@
 // but WITHOUT ANY WARRANTY
 
 using System.Reflection;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -38,9 +39,36 @@ Log.Logger = new LoggerConfiguration()
 
 var builder = Host.CreateDefaultBuilder();
 
-builder.ConfigureServices((context, services) =>
+builder.ConfigureAppConfiguration((context, configurationBuilder) =>
+{
+    configurationBuilder.AddInMemoryCollection(new Dictionary<string, string>
+    {
+        {"ImportTemplateDirectory", Path.Combine(dllPath, "Template/Import")},
+        {"ExportTemplateDirectory", Path.Combine(dllPath, "Template/Export")},
+    });
+});
+
+#region Directory Check
+
+if(Directory.Exists(Path.Combine(dllPath, "Template")) is false)
+{
+    Directory.CreateDirectory(Path.Combine(dllPath, "Template"));
+}
+if (Directory.Exists(Path.Combine(dllPath, "Template/Import")) is false)
+{
+    Directory.CreateDirectory(Path.Combine(dllPath, "Template/Import"));
+}
+if (Directory.Exists(Path.Combine(dllPath, "Template/Export")) is false)
+{
+    Directory.CreateDirectory(Path.Combine(dllPath, "Template/Export"));
+}
+
+#endregion
+
+builder.ConfigureServices((_, services) =>
 {
     services.AddHostedService<Hosting>();
+    services.AddSingleton<ITemplateService, TemplateService>();
 });
 
 builder.ConfigureLogging(loggingBuilder =>
