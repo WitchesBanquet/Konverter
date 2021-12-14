@@ -30,6 +30,8 @@ public class AddNewExportTemplateRunner : IRunner
     public Task Run()
     {
         _logger.LogInformation("Start to add new export template");
+
+        // Get files
         var fileCheck = false;
         var indexCheck = false;
         var filePath = "";
@@ -68,6 +70,16 @@ public class AddNewExportTemplateRunner : IRunner
             _logger.LogInformation("File path is valid, export index template original file path is {path}", filePath);
             indexCheck = true;
         }
+
+        // Filename template
+        var ft = AnsiConsole.Ask<string>("请输入文件名称模版(输入 %quit 退出，即不从文件名读取信息)：");
+        if (ft.Trim().ToLower() == "%quit")
+        {
+            _logger.LogInformation("No filename template");
+            ft = "";
+        }
+
+        // Metadata
         var name = AnsiConsole.Ask<string>("请输入模版名称(输入 %quit 退出)：");
         if (name.Trim().ToLower() == "%quit")
         {
@@ -81,8 +93,11 @@ public class AddNewExportTemplateRunner : IRunner
             return Task.CompletedTask;
         }
 
-        var model = new ExportTemplate() { Name = name, Description = description };
+        // Build model and add
+        var model = new ExportTemplate { Name = name, Description = description, FileNameTemplate = ft };
         var obj = _templateService.ExportTemplateFromFile(filePath, indexPath, model);
+
+        // Finish check
         if (obj is null)
         {
             _logger.LogError("Failed to add new export template");

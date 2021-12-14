@@ -17,4 +17,5 @@ public class ImportTemplate : IMetadata
     public string Name { get; set; }
     public string Description { get; set; }
     public DateTime AddTime { get; set; }
+    public string FileNameTemplate { get; set; }
 }
