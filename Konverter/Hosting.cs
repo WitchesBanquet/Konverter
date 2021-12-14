@@ -16,28 +16,22 @@ namespace Konverter;
 
 public class Hosting : IHostedService
 {
-    private readonly IHostApplicationLifetime _lifetime;
     private readonly ILogger<Hosting> _logger;
     private readonly ICommandLineService _commandLineService;
 
     public Hosting(
-        IHostApplicationLifetime lifetime,
         ILogger<Hosting> logger,
         ICommandLineService commandLineService)
     {
-        _lifetime = lifetime;
         _logger = logger;
         _commandLineService = commandLineService;
     }
 
     public Task StartAsync(CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Hosting start called");
-        _logger.LogInformation("Hosting starting");
+        _logger.LogInformation("Hosting started");
 
-        _lifetime.ApplicationStarted.Register(OnStarted);
-        _lifetime.ApplicationStopping.Register(OnStopping);
-        _lifetime.ApplicationStopped.Register(OnStopped);
+        _commandLineService.Run();
 
         return Task.CompletedTask;
     }
@@ -45,22 +39,8 @@ public class Hosting : IHostedService
     public Task StopAsync(CancellationToken cancellationToken)
     {
         _logger.LogInformation("Hosting stop called");
+        AnsiConsole.Write(new Markup("[red]正在关闭..."));
+        AnsiConsole.WriteLine();
         return Task.CompletedTask;
-    }
-
-    private void OnStarted()
-    {
-        _logger.LogInformation("Hosting started");
-        _commandLineService.Run();
-    }
-
-    private void OnStopping()
-    {
-        _logger.LogInformation("Hosting stopping");
-    }
-
-    private void OnStopped()
-    {
-        _logger.LogInformation("Hosting stopped");
     }
 }
