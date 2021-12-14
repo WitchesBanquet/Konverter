@@ -9,6 +9,7 @@
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY
 
+using Konverter.Services.Interfaces;
 using Microsoft.Extensions.Hosting;
 
 namespace Konverter;
@@ -17,11 +18,16 @@ public class Hosting : IHostedService
 {
     private readonly IHostApplicationLifetime _lifetime;
     private readonly ILogger<Hosting> _logger;
+    private readonly ICommandLineService _commandLineService;
 
-    public Hosting(IHostApplicationLifetime lifetime, ILogger<Hosting> logger)
+    public Hosting(
+        IHostApplicationLifetime lifetime,
+        ILogger<Hosting> logger,
+        ICommandLineService commandLineService)
     {
         _lifetime = lifetime;
         _logger = logger;
+        _commandLineService = commandLineService;
     }
 
     public Task StartAsync(CancellationToken cancellationToken)
@@ -45,6 +51,7 @@ public class Hosting : IHostedService
     private void OnStarted()
     {
         _logger.LogInformation("Hosting started");
+        _commandLineService.Run();
     }
 
     private void OnStopping()

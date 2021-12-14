@@ -9,12 +9,9 @@
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY
 
-global using Konverter;
-global using Microsoft.Extensions.Logging;
-global using Spectre.Console;
-global using Konverter.Services;
-global using Konverter.Services.Interfaces;
-global using Konverter.Utilities;
-global using Konverter.Attributes;
-global using Konverter.Enums;
-global using Konverter.Entities;
+namespace Konverter.Services.Interfaces;
+
+public interface ICommandLineService
+{
+    Task Run();
+}

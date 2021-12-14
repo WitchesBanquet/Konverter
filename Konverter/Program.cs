@@ -27,6 +27,23 @@ var loggingFile = Path.Combine(dllPath, "Logs", $"log-{DateTime.Now:yyyy-MM-dd-H
 
 #endregion
 
+#region Directory Check
+
+if(Directory.Exists(Path.Combine(dllPath, "Template")) is false)
+{
+    Directory.CreateDirectory(Path.Combine(dllPath, "Template"));
+}
+if (Directory.Exists(Path.Combine(dllPath, "Template/Import")) is false)
+{
+    Directory.CreateDirectory(Path.Combine(dllPath, "Template/Import"));
+}
+if (Directory.Exists(Path.Combine(dllPath, "Template/Export")) is false)
+{
+    Directory.CreateDirectory(Path.Combine(dllPath, "Template/Export"));
+}
+
+#endregion
+
 #region Setup Serilog
 
 Log.Logger = new LoggerConfiguration()
@@ -48,27 +65,11 @@ builder.ConfigureAppConfiguration((context, configurationBuilder) =>
     });
 });
 
-#region Directory Check
-
-if(Directory.Exists(Path.Combine(dllPath, "Template")) is false)
-{
-    Directory.CreateDirectory(Path.Combine(dllPath, "Template"));
-}
-if (Directory.Exists(Path.Combine(dllPath, "Template/Import")) is false)
-{
-    Directory.CreateDirectory(Path.Combine(dllPath, "Template/Import"));
-}
-if (Directory.Exists(Path.Combine(dllPath, "Template/Export")) is false)
-{
-    Directory.CreateDirectory(Path.Combine(dllPath, "Template/Export"));
-}
-
-#endregion
-
 builder.ConfigureServices((_, services) =>
 {
     services.AddHostedService<Hosting>();
     services.AddSingleton<ITemplateService, TemplateService>();
+    services.AddSingleton<ICommandLineService, CommandLineService>();
 });
 
 builder.ConfigureLogging(loggingBuilder =>
