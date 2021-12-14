@@ -97,6 +97,7 @@ public class CommandLineService : ICommandLineService
             }
         }
 
+        AnsiConsole.WriteLine();
         var s = AnsiConsole.Prompt(new SelectionPrompt<string>()
             .Title("请选择功能")
             .PageSize(10)

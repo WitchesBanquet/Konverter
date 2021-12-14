@@ -36,14 +36,14 @@ public class AddNewImportTemplateRunner : IRunner
         var filePath = "";
         while (fileCheck is false)
         {
-            filePath = AnsiConsole.Ask<string>("请输入模版文件路径(输入 %quit 退出)：");
+            filePath = AnsiConsole.Ask<string>("请输入 模版文件路径 (输入 %quit 退出)：");
             if (filePath.Trim().ToLower() == "%quit")
             {
                 _logger.LogInformation("Import template operation canceled by user");
                 return Task.CompletedTask;
             }
 
-            if (!File.Exists(filePath))
+            if (File.Exists(filePath) is false)
             {
                 continue;
             }
@@ -53,7 +53,7 @@ public class AddNewImportTemplateRunner : IRunner
         }
 
         // Filename Template
-        var ft = AnsiConsole.Ask<string>("请输入文件名称模版(输入 %quit 退出，即不从文件名读取信息)：");
+        var ft = AnsiConsole.Ask<string>("请输入 文件名称模版 (输入 %quit 退出，即不从文件名读取信息)：");
         if (ft.Trim().ToLower() == "%quit")
         {
             _logger.LogInformation("No filename template");
@@ -61,13 +61,13 @@ public class AddNewImportTemplateRunner : IRunner
         }
 
         // Metadata
-        var name = AnsiConsole.Ask<string>("请输入模版名称(输入 %quit 退出)：");
+        var name = AnsiConsole.Ask<string>("请输入 模版名称 (输入 %quit 退出)：");
         if (name.Trim().ToLower() == "%quit")
         {
             _logger.LogInformation("Import template operation canceled by user");
             return Task.CompletedTask;
         }
-        var description = AnsiConsole.Ask<string>("请输入模版描述(输入 %quit 退出)：");
+        var description = AnsiConsole.Ask<string>("请输入 模版描述 (输入 %quit 退出)：");
         if (description.Trim().ToLower() == "%quit")
         {
             _logger.LogInformation("Import template operation canceled by user");
@@ -88,6 +88,7 @@ public class AddNewImportTemplateRunner : IRunner
         // Finish check
         _logger.LogInformation("Add import template successfully, id is {id}", obj.Id);
         AnsiConsole.Write(new Markup($"[green]添加成功，模版 Id：{obj.Id}[/]"));
+        AnsiConsole.WriteLine();
         return Task.CompletedTask;
     }
 }

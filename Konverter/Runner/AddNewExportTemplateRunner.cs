@@ -38,14 +38,14 @@ public class AddNewExportTemplateRunner : IRunner
         var indexPath = "";
         while (fileCheck is false)
         {
-            filePath = AnsiConsole.Ask<string>("请输入模版文件路径(输入 %quit 退出)：");
+            filePath = AnsiConsole.Ask<string>("请输入 模版文件路径 (输入 %quit 退出)：");
             if (filePath.Trim().ToLower() == "%quit")
             {
                 _logger.LogInformation("Import template operation canceled by user");
                 return Task.CompletedTask;
             }
 
-            if (!File.Exists(filePath))
+            if (File.Exists(filePath) is false)
             {
                 continue;
             }
@@ -55,14 +55,14 @@ public class AddNewExportTemplateRunner : IRunner
         }
         while (indexCheck is false)
         {
-            indexPath = AnsiConsole.Ask<string>("请输入模版文件路径(输入 %quit 退出，即无 Index 模版)：");
+            indexPath = AnsiConsole.Ask<string>("请输入 目录模版文件路径 (输入 %quit 退出，即无 Index 模版)：");
             if (indexPath.Trim().ToLower() == "%quit")
             {
                 _logger.LogInformation("No index template");
-                continue;
+                break;
             }
 
-            if (!File.Exists(indexPath))
+            if (File.Exists(indexPath) is false)
             {
                 continue;
             }
@@ -72,7 +72,7 @@ public class AddNewExportTemplateRunner : IRunner
         }
 
         // Filename template
-        var ft = AnsiConsole.Ask<string>("请输入文件名称模版(输入 %quit 退出，即不从文件名读取信息)：");
+        var ft = AnsiConsole.Ask<string>("请输入 文件名模版 (输入 %quit 退出，即不从文件名读取信息)：");
         if (ft.Trim().ToLower() == "%quit")
         {
             _logger.LogInformation("No filename template");
@@ -80,19 +80,19 @@ public class AddNewExportTemplateRunner : IRunner
         }
 
         // Metadata
-        var name = AnsiConsole.Ask<string>("请输入模版名称(输入 %quit 退出)：");
+        var name = AnsiConsole.Ask<string>("请输入 模版名称 (输入 %quit 退出)：");
         if (name.Trim().ToLower() == "%quit")
         {
             _logger.LogInformation("Import template operation canceled by user");
             return Task.CompletedTask;
         }
-        var description = AnsiConsole.Ask<string>("请输入模版描述(输入 %quit 退出)：");
+        var description = AnsiConsole.Ask<string>("请输入 模版描述 (输入 %quit 退出)：");
         if (description.Trim().ToLower() == "%quit")
         {
             _logger.LogInformation("Import template operation canceled by user");
             return Task.CompletedTask;
         }
-        var fe = AnsiConsole.Ask<string>("请输入输出文件后缀(输入 %quit 退出)：");
+        var fe = AnsiConsole.Ask<string>("请输入 输出文件后缀 (输入 %quit 退出)：");
         if (fe.Trim().ToLower() == "%quit")
         {
             _logger.LogInformation("Import template operation canceled by user");
@@ -113,6 +113,7 @@ public class AddNewExportTemplateRunner : IRunner
         }
         _logger.LogInformation("Add export template successfully, id is {id}", obj.Id);
         AnsiConsole.Write(new Markup($"[green]添加成功，模版 Id：{obj.Id}[/]"));
+        AnsiConsole.WriteLine();
         return Task.CompletedTask;
     }
 }
