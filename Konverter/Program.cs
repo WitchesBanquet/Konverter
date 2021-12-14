@@ -10,6 +10,7 @@
 // but WITHOUT ANY WARRANTY
 
 using System.Reflection;
+using Konverter.Runner;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -70,6 +71,9 @@ builder.ConfigureServices((_, services) =>
     services.AddHostedService<Hosting>();
     services.AddSingleton<ITemplateService, TemplateService>();
     services.AddSingleton<ICommandLineService, CommandLineService>();
+
+    services.AddSingleton<IRunner, AddNewImportTemplateRunner>();
+    services.AddSingleton<IRunner, AddNewExportTemplateRunner>();
 });
 
 builder.ConfigureLogging(loggingBuilder =>
