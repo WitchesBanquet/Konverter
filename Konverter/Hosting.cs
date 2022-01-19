@@ -38,7 +38,7 @@ public class Hosting : IHostedService
     public Task StopAsync(CancellationToken cancellationToken)
     {
         _logger.LogInformation("Hosting stop called");
-        AnsiConsole.Write(new Markup("[red]正在关闭..."));
+        AnsiConsole.Write(new Markup("[red]正在关闭...[/]"));
         AnsiConsole.WriteLine();
         return Task.CompletedTask;
     }
